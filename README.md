@@ -8,6 +8,10 @@
 - [Controllers](#controllers)
   - [Controller naming convention](#controller-naming-convention)
   - [ControllerBase class](#controllerbase-class)
+- [Model Binding](#model-binding)
+  - [Force Model Binding](#force-model-binding)
+  - [Model Validation](#model-validation)
+  - [Input Formatters](#input-formatters)
 
 
 # Dotnet CLI
@@ -44,7 +48,7 @@ example: `dotnet new web`
 ## Controller naming convention
 - Controller class should be suffixed by the word Controller with them.
     - example: `StudentController`
-- However it is not ncessory to add **Controller** suffix. We can also add `[Controller]` attribute at the top of the class to let .NET know it is a controller.
+- However it is not necessary to add **Controller** suffix. We can also add `[Controller]` attribute at the top of the class to let .NET know it is a controller.
   - example: 
   ```
   [Controller]
@@ -53,3 +57,43 @@ example: `dotnet new web`
 ## ControllerBase class
   - Controller class can be derived from `ControllerBase` class
   - This allows to use additional/simplified functionality like shorthand methods
+
+
+# Model Binding
+- Happens automatically after routing
+- Allows .NET to read incoming data from http request and pass them as args to action methods
+- It follows following precedence:
+  1. Form Fields
+  2. Request Body (e.g. JSON)
+  3. Route Data
+  4. Query Parameters
+
+## Force Model Binding
+- we can override the default precedence of model binding by using attributes before the argument. e.g. `FromRoute`, `FromQuery`, `FromBody`, etc.
+
+## Model Validation
+- We can add attributes to model classes for model validations. For example:
+```
+class Person
+{
+  [Required] // attribute for required validation
+  public string FirstName { get; set; }
+  public string LastName { get; set; }
+}
+```
+- To check if model is valid, we use `Model.IsValid`. For example:
+```
+public IActionResult Create(Person person)
+{
+  ...
+  if (!Model.IsValid)
+  {
+    return BadRequest("Invalid model");
+  }
+  ...
+}
+```
+
+## Input Formatters
+- By default ASP.NET core enables JSON serializer, that will automatically parse incoming json data
+- To enable XML serialization `builder.Services.AddXmlSerializerFormatters()`
