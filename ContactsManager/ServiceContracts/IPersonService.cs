@@ -1,4 +1,5 @@
 ﻿using ServiceContracts.Dtos;
+using ServiceContracts.Enums;
 
 namespace ServiceContracts;
 
@@ -8,4 +9,5 @@ public interface IPersonService
   IEnumerable<PersonResponse> GetAllPersons();
   PersonResponse? GetPersonById(Guid? id);
   IEnumerable<PersonResponse> GetFilteredPersons(string? searchBy, string? searchString);
+  IEnumerable<PersonResponse> GetSortedPersons(IEnumerable<PersonResponse> allPersons, string sortBy, SortOptions sortOrder);
 }

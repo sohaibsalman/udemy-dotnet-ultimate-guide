@@ -49,6 +49,8 @@ namespace Tests.Person
       List<PersonResponse> createdPersons = CreatePersons();
       var filteredPersons = _personService.GetFilteredPersons(nameof(Entities.Person.Name), "");
 
+      Assert.Equal(createdPersons.Count, filteredPersons.Count());
+
       foreach (var person in createdPersons)
       {
         Assert.Contains(person, filteredPersons);
@@ -80,7 +82,7 @@ namespace Tests.Person
 
       List<PersonResponse> createdPersons = CreatePersons().Where(x => !string.IsNullOrEmpty(x.Email) && x.Email.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
       var filteredPersons = _personService.GetFilteredPersons(searchBy, searchString);
-      
+
       Assert.Equal(createdPersons.Count, filteredPersons.Count());
 
       foreach (var person in createdPersons)
@@ -120,6 +122,54 @@ namespace Tests.Person
       foreach (var person in createdPersons)
       {
         Assert.Contains(person, filteredPersons);
+      }
+    }
+
+    [Fact]
+    public void GetSortedPersons_ByNameAscending()
+    {
+      string sortBy = nameof(Entities.Person.Name);
+
+      List<PersonResponse> createdPersons = CreatePersons().OrderBy(x => x.Name).ToList();
+      var sortedPersons = _personService.GetSortedPersons(createdPersons, sortBy, SortOptions.Ascending).ToList();
+
+      Assert.Equal(createdPersons.Count, sortedPersons.Count);
+
+      for (int i = 0; i < createdPersons.Count; i++)
+      {
+        Assert.Equal(createdPersons[i], sortedPersons[i]);
+      }
+    }
+
+    [Fact]
+    public void GetSortedPersons_ByNameDescending()
+    {
+      string sortBy = nameof(Entities.Person.Name);
+
+      List<PersonResponse> createdPersons = CreatePersons().OrderByDescending(x => x.Name).ToList();
+      var sortedPersons = _personService.GetSortedPersons(createdPersons, sortBy, SortOptions.Descending).ToList();
+
+      Assert.Equal(createdPersons.Count, sortedPersons.Count);
+
+      for (int i = 0; i < createdPersons.Count; i++)
+      {
+        Assert.Equal(createdPersons[i], sortedPersons[i]);
+      }
+    }
+
+    [Fact]
+    public void GetSortedPersons_ByCountryDescending()
+    {
+      string sortBy = nameof(Entities.Person.CountryId);
+
+      List<PersonResponse> createdPersons = CreatePersons().OrderByDescending(x => x.Country).ToList();
+      var sortedPersons = _personService.GetSortedPersons(createdPersons, sortBy, SortOptions.Descending).ToList();
+
+      Assert.Equal(createdPersons.Count, sortedPersons.Count);
+
+      for (int i = 0; i < createdPersons.Count; i++)
+      {
+        Assert.Equal(createdPersons[i], sortedPersons[i]);
       }
     }
   }

@@ -1,6 +1,7 @@
 ﻿using Entities;
 using ServiceContracts;
 using ServiceContracts.Dtos;
+using ServiceContracts.Enums;
 using Services.Helpers;
 
 namespace Services;
@@ -70,5 +71,23 @@ public class PersonService : IPersonService
     response.Country = _countryService.GetCountryById(person.CountryId)?.Name;
 
     return response;
+  }
+
+  public IEnumerable<PersonResponse> GetSortedPersons(IEnumerable<PersonResponse> allPersons, string sortBy, SortOptions sortOrder)
+  {
+    if (string.IsNullOrEmpty(sortBy))
+      sortBy = nameof(Person.Name);
+
+    return sortBy switch
+    {
+      nameof(Person.Name) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Name) : allPersons.OrderByDescending(x => x.Name),
+      nameof(Person.Email) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Email) : allPersons.OrderByDescending(x => x.Email),
+      nameof(Person.Address) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Address) : allPersons.OrderByDescending(x => x.Address),
+      nameof(Person.DateOfBirth) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.DateOfBirth) : allPersons.OrderByDescending(x => x.DateOfBirth),
+      nameof(Person.Gender) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Gender) : allPersons.OrderByDescending(x => x.Gender),
+      nameof(Person.CountryId) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Country) : allPersons.OrderByDescending(x => x.Country),
+      nameof(Person.ReceiveNewsLetters) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.ReceiveNewsLetters) : allPersons.OrderByDescending(x => x.ReceiveNewsLetters),
+      _ => allPersons,
+    };
   }
 }
