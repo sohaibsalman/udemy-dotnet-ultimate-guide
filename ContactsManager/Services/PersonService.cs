@@ -90,4 +90,41 @@ public class PersonService : IPersonService
       _ => allPersons,
     };
   }
+
+  public PersonResponse UpdatePerson(PersonUpdateRequest? person)
+  {
+    if(person is null)
+      throw new ArgumentNullException(nameof(person));
+
+    ValidationHelper.ModelValidation(person);
+
+    var personInDb = _persons.FirstOrDefault(x => x.Id == person.Id);
+
+    if(personInDb is null)
+      throw new ArgumentException(nameof(person.Id));
+
+    personInDb.Name = person.Name;
+    personInDb.Email = person.Email;
+    personInDb.Address = person.Address;
+    personInDb.ReceiveNewsLetters = person.ReceiveNewsLetters;
+    personInDb.CountryId = person.CountryId;
+    personInDb.DateOfBirth = person.DateOfBirth;
+    personInDb.Gender = person.Gender.ToString();
+
+    return personInDb.ToPersonResponse();
+  }
+
+  public bool DeletePerson(Guid? id)
+  {
+    if(id is null)
+      throw new ArgumentNullException(nameof(id));
+
+    var existingPerson = _persons.FirstOrDefault(x => x.Id == id);
+
+    if (existingPerson is null)
+      return false;
+
+    _persons.RemoveAll(x => x.Id == id);
+    return true;
+  }
 }

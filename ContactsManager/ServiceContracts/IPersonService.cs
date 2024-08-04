@@ -10,4 +10,6 @@ public interface IPersonService
   PersonResponse? GetPersonById(Guid? id);
   IEnumerable<PersonResponse> GetFilteredPersons(string? searchBy, string? searchString);
   IEnumerable<PersonResponse> GetSortedPersons(IEnumerable<PersonResponse> allPersons, string sortBy, SortOptions sortOrder);
+  PersonResponse UpdatePerson(PersonUpdateRequest? person);
+  bool DeletePerson(Guid? id);
 }
