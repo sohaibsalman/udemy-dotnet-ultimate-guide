@@ -9,7 +9,7 @@ namespace Tests.County
 
     public CountryTestBase()
     {
-      _countryService = new CountryService();
+      _countryService = new CountryService(false);
     }
   }
 }

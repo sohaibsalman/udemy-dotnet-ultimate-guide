@@ -12,8 +12,8 @@ public class PersonTestBase
 
   protected PersonTestBase()
   {
-    _countryService = new CountryService();
-    _personService = new PersonService(_countryService);
+    _countryService = new CountryService(false);
+    _personService = new PersonService(_countryService, false);
   }
 
   protected List<PersonResponse> CreatePersons()
