@@ -1,24 +1,52 @@
 ﻿@model IEnumerable<PersonResponse>
 @{
     ViewBag.Title = "Persons";
+    var newOrderBy = ViewBag.sortOrder == SortOptions.Ascending ? SortOptions.Descending : SortOptions.Ascending;
+    var sortHref = $"~/persons?searchBy={ViewBag.SearchBy}&searchString={ViewBag.SearchString}&sortBy={{sortBy}}&sortOrder={newOrderBy}";
 }
 <h1>Persons</h1>
 
-<table class="table">
+<form method="get" action="~/persons">
+    <div class="box row">
+        <div class="col">
+            <select class="form-control" name="searchBy">
+                @foreach (var option in ViewBag.SearchByFields)
+                {
+                    if (ViewBag.SearchBy == option.Key)
+                    {
+                        <option value="@option.Key" selected>@option.Value</option>
+                    }
+                    else
+                    {
+                        <option value="@option.Key">@option.Value</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col">
+            <input class="form-control" type="text" name="searchString" placeholder="Search String..." value="@ViewBag.SearchString" />
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<table class="table my-3">
     <thead>
         <tr>
-            <th>Person Name</th>
-            <th>Email</th>
-            <th>Date of Birth</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Country</th>
-            <th>Address</th>
-            <th>Receive Newsletters</th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.Name)&sortOrder=@newOrderBy">Person Name</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.Email)&sortOrder=@newOrderBy">Email</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.DateOfBirth)&sortOrder=@newOrderBy">Date Of Birth</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.Age)&sortOrder=@newOrderBy">Age</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.Gender)&sortOrder=@newOrderBy">Gender</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.Country)&sortOrder=@newOrderBy">Country</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.Address)&sortOrder=@newOrderBy">Address</a> </th>
+            <th> <a href="~/persons?searchBy=@ViewBag.SearchBy&searchString=@ViewBag.SearchString&sortBy=@nameof(PersonResponse.ReceiveNewsLetters)&sortOrder=@newOrderBy">Receive Newsletters</a> </th>
         </tr>
     </thead>
     <tbody>
-      @foreach(PersonResponse person in Model)
+        @foreach (PersonResponse person in Model)
         {
             <tr>
                 <td>@person.Name</td>

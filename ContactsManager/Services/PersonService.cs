@@ -110,7 +110,8 @@ public class PersonService : IPersonService
             nameof(Person.Address) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Address) : allPersons.OrderByDescending(x => x.Address),
             nameof(Person.DateOfBirth) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.DateOfBirth) : allPersons.OrderByDescending(x => x.DateOfBirth),
             nameof(Person.Gender) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Gender) : allPersons.OrderByDescending(x => x.Gender),
-            nameof(Person.CountryId) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Country) : allPersons.OrderByDescending(x => x.Country),
+            nameof(PersonResponse.Country) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Country) : allPersons.OrderByDescending(x => x.Country),
+            nameof(PersonResponse.Age) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.Age) : allPersons.OrderByDescending(x => x.Age),
             nameof(Person.ReceiveNewsLetters) => sortOrder == SortOptions.Ascending ? allPersons.OrderBy(x => x.ReceiveNewsLetters) : allPersons.OrderByDescending(x => x.ReceiveNewsLetters),
             _ => allPersons,
         };
